@@ -1,4 +1,4 @@
-.App {
+.TodoList {
   background-color: white;
   border: 1px solid #e4e4e4;
   border-radius: 5px;
@@ -8,22 +8,22 @@
   width: 500px;
 }
 
-.App a, .App a:visited {
+.TodoList a, .TodoList a:visited {
   color: #448ccb;
   text-decoration: none;
 }
 
-.App a:active {
+.TodoList a:active {
   color: #044c9b;
 }
 
-.App header {
+.TodoList header {
   border-bottom: 1px dashed #d0d0d0;
   height: 100px;
   padding: 20px;
 }
 
-.App header h1 {
+.TodoList header h1 {
   color: #333;
   font-size: 24pt;
   line-height: 100px;
@@ -31,25 +31,25 @@
   text-align: center;
 }
 
-.App form {
+.TodoList form {
   margin: 0;
   padding: 20px;
 }
 
-.App form input {
+.TodoList form input {
   border: 1px solid #d0d0d0;
   border-radius: 5px;
   font-size: 10pt;
   margin: 0;
 }
 
-.App form input[type="text"] {
+.TodoList form input[type="text"] {
   padding: 0px 10px;
   height: 28px;
   width: 300px;
 }
 
-.App form input[type="submit"] {
+.TodoList form input[type="submit"] {
   background-color: #f0f0f0;
   color: gray;
   font-weight: bold;
@@ -58,7 +58,7 @@
   width: 128px;
 }
 
-.App ul {
+.TodoList ul {
   list-style-type: none;
   min-height: 300px;
   margin: 0;
@@ -66,22 +66,22 @@
 }
 
 /* a single task */
-.App ul li {
+.TodoList ul li {
   padding: 20px;
   text-shadow: 1px 1px white;
 }
 
-.App ul li:nth-child(odd) {
+.TodoList ul li:nth-child(odd) {
   background-color: #f4f7fa;
 }
 
-.App footer {
+.TodoList footer {
   border-top: 1px dashed #d0d0d0;
   color: #999;
   font-size: 11pt;
   padding: 20px;
 }
 
-.App footer a {
+.TodoList footer a {
   float: right;
 }

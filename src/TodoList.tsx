@@ -1,12 +1,12 @@
 import * as React from 'react';
-import './App.css';
+import './TodoList.css';
 
-class App extends React.Component<{}, null> {
+export class TodoList extends React.Component<{}, null> {
   todoInput?: HTMLInputElement;
 
   render() {
     return (
-      <section className="App">
+      <section className="TodoList">
         <header>
           <h1>Todos</h1>
         </header>
@@ -39,5 +39,3 @@ class App extends React.Component<{}, null> {
     (event as Event).preventDefault();
   }
 }
-
-export default App;
