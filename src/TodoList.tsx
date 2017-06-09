@@ -18,7 +18,11 @@ export class TodoList extends React.Component<Props, null> {
   todoInput?: HTMLInputElement;
 
   render(): JSX.Element {
+    let tasksLeft = 0;
     let tasks = this.props.tasks.map(task => {
+      if (!task.done) {
+        tasksLeft++;
+      }
       return (
         <TodoItem
           task={task}
@@ -43,21 +47,15 @@ export class TodoList extends React.Component<Props, null> {
         </form>
         <ul>{tasks}</ul>
         <footer>
-          <span>{this.tasksLeft()}</span>
-          <a href="#" onClick={this.markAllComplete}>Mark all as complete</a>
+          <span>{tasksLeft} {tasksLeft === 1 ? 'task' : 'tasks'} left</span>
+          <a
+            href={tasksLeft === 0 ? undefined : "#"}
+            className={tasksLeft === 0 ? 'disabled' : undefined}
+            onClick={this.markAllComplete}
+          >Mark all as complete</a>
         </footer>
       </section>
     );
-  }
-
-  tasksLeft(): string {
-    let count = 0;
-    for (let task of this.props.tasks) {
-      if (!task.done) {
-        count++;
-      }
-    }
-    return count === 1 ? '1 task left' : `${count} tasks left`;
   }
 
   addTask = (event: MouseEventInit) => {

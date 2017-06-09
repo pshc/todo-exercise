@@ -11,10 +11,16 @@
 .TodoList a, .TodoList a:visited {
   color: #448ccb;
   text-decoration: none;
+  user-select: none;
 }
 
 .TodoList a:active {
   color: #044c9b;
+}
+
+.TodoList a.disabled {
+  color: #ddd;
+  cursor: default;
 }
 
 .TodoList header {
@@ -69,6 +75,7 @@
 .TodoList ul li {
   padding: 20px;
   text-shadow: 1px 1px white;
+  user-select: none;
 }
 
 .TodoList ul li.done span {
