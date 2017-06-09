@@ -11,7 +11,7 @@ class App extends React.Component<{}, {tasks: Task[]}> {
     super(props);
     this.state = {tasks: []};
     this.api('GET', 'tasks').then(json => {
-      this.setState({tasks: json.tasks});
+      this.setState({tasks: json.tasks!});
     });
   }
 
@@ -26,7 +26,7 @@ class App extends React.Component<{}, {tasks: Task[]}> {
     );
   }
 
-  api(method: string, resource: string, body?: {}): Promise<any> {
+  api(method: string, resource: string, body?: {}): Promise<{tasks?: Task[]}> {
     let headers = new Headers();
     headers.append('Accept', 'application/json');
     let init: RequestInit = {headers: headers, method: method};

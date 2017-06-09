@@ -49,10 +49,12 @@ export class TodoList extends React.Component<Props, null> {
         <footer>
           <span>{tasksLeft} {tasksLeft === 1 ? 'task' : 'tasks'} left</span>
           <a
-            href={tasksLeft === 0 ? undefined : "#"}
+            href={tasksLeft === 0 ? undefined : '#'}
             className={tasksLeft === 0 ? 'disabled' : undefined}
             onClick={this.markAllComplete}
-          >Mark all as complete</a>
+          >
+            Mark all as complete
+          </a>
         </footer>
       </section>
     );
