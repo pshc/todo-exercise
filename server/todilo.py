@@ -35,6 +35,12 @@ def single_task(id):
             TASK_LIST.remove(id)
         return jsonify({})
 
+@app.route('/api/tasks/markAll', methods=['POST'])
+def mark_all_complete():
+    for task in TASKS.values():
+        task['done'] = True
+    return jsonify({})
+
 class InvalidUsage(Exception):
     status_code = 400
     def __init__(self, reason):

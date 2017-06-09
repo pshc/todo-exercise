@@ -11,6 +11,7 @@ export interface Props {
   tasks: Task[];
   addTask: (name: string) => void;
   toggleTask: (id: string) => void;
+  markAllTasks: () => void;
 }
 
 export class TodoList extends React.Component<Props, null> {
@@ -72,6 +73,7 @@ export class TodoList extends React.Component<Props, null> {
 
   markAllComplete = (event: MouseEventInit) => {
     (event as Event).preventDefault();
+    this.props.markAllTasks();
   }
 }
 

@@ -20,6 +20,7 @@ class App extends React.Component<{}, {tasks: Task[]}> {
       <TodoList
         tasks={this.state.tasks}
         addTask={this.addTask}
+        markAllTasks={this.markAllTasks}
         toggleTask={this.toggleTask}
       />
     );
@@ -64,6 +65,11 @@ class App extends React.Component<{}, {tasks: Task[]}> {
       task.done = !task.done;
       return task;
     });
+  }
+
+  markAllTasks = () => {
+    this.setState({tasks: this.state.tasks.map(task => { task.done = true; return task; })});
+    this.api('POST', 'tasks/markAll');
   }
 }
 

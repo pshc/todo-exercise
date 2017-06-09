@@ -9,6 +9,7 @@ it('renders without crashing', () => {
     <TodoList
       tasks={tasks}
       addTask={t => void 0}
+      markAllTasks={() => void 0}
       toggleTask={id => void 0}
     />, div);
 });
