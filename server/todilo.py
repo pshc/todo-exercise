@@ -19,6 +19,8 @@ def single_task(id):
             raise InvalidUsage('Must provide `name` string')
         if not isinstance(json.get('done'), bool):
             raise InvalidUsage('Must provide `done` boolean')
+        if len(json['name']) > 1000:
+            raise InvalidUsage('`name` cannot be longer than 1000 characters')
 
         # make sure nothing else slips in
         TASKS[id] = dict(id=id, name=json['name'], done=json['done'])

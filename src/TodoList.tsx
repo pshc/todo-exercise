@@ -41,6 +41,7 @@ export class TodoList extends React.Component<Props, null> {
           <input
             type="text"
             placeholder="What needs to be done?"
+            maxLength={1000}
             ref={input => this.todoInput = input}
           />
           <input type="submit" value="Add Todo" />
