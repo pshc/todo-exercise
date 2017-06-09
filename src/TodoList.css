@@ -71,6 +71,12 @@
   text-shadow: 1px 1px white;
 }
 
+.TodoList ul li.done span {
+  color: #999;
+  text-decoration: line-through;
+  text-shadow: none;
+}
+
 .TodoList ul li:nth-child(odd) {
   background-color: #f4f7fa;
 }

@@ -86,13 +86,13 @@ class TodoItem extends React.Component<TodoItemProps, null> {
   render() {
     let task = this.props.task;
     return (
-      <li><label>
+      <li className={task.done ? 'done' : undefined}><label>
         <input
           type="checkbox"
           checked={task.done}
           onChange={() => this.props.toggleTask()}
         />
-        {task.name}
+        &nbsp;<span>{task.name}</span>
       </label></li>
     );
   }
