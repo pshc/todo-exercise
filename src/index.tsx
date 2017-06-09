@@ -41,7 +41,7 @@ class App extends React.Component<{}, {tasks: Task[]}> {
   addTask = (name: string) => {
     let id = String(Math.random()).slice(2);
     let task: Task = {id: id, name: name, done: false};
-    this.setState({tasks: [...this.state.tasks, task]});
+    this.setState({tasks: [task, ...this.state.tasks]});
     this.api('PUT', `task/${task.id}`, task);
   }
 

@@ -23,7 +23,7 @@ def single_task(id):
         # make sure nothing else slips in
         TASKS[id] = dict(id=id, name=json['name'], done=json['done'])
         if id not in TASK_LIST:
-            TASK_LIST.append(id)
+            TASK_LIST.insert(0, id)
 
         index = TASK_LIST.index(id)
         return jsonify({'index': index})
