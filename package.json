@@ -11,12 +11,14 @@
     "react-dom": "^15.5.4"
   },
   "devDependencies": {
+    "concurrently": "^3.4.0",
     "react-scripts-ts": "2.2.0"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
+    "start": "concurrently \"FLASK_APP=server/todilo.py flask run --port=3001\" \"react-scripts-ts start\"",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
-  }
+  },
+  "proxy": "http://localhost:3001/"
 }
