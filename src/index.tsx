@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {Task, TodoList} from './TodoList';
+import {DragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import {DndTodoList, Task} from './TodoList';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
@@ -15,9 +17,9 @@ class App extends React.Component<{}, {tasks: Task[]}> {
     });
   }
 
-  render() {
+  render(): JSX.Element | null {
     return (
-      <TodoList
+      <DndTodoList
         tasks={this.state.tasks}
         addTask={this.addTask}
         markAllTasks={this.markAllTasks}
@@ -73,5 +75,7 @@ class App extends React.Component<{}, {tasks: Task[]}> {
   }
 }
 
-ReactDOM.render(<App />, root);
+const DndApp = DragDropContext(HTML5Backend)(App);
+
+ReactDOM.render(<DndApp />, root);
 registerServiceWorker();

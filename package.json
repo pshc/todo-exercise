@@ -8,9 +8,13 @@
     "@types/react": "^15.0.27",
     "@types/react-dom": "^15.5.0",
     "react": "^15.5.4",
+    "react-dnd": "^2.4.0",
+    "react-dnd-html5-backend": "^2.4.1",
     "react-dom": "^15.5.4"
   },
   "devDependencies": {
+    "@types/react-dnd": "^2.0.32",
+    "@types/react-dnd-html5-backend": "^2.1.7",
     "concurrently": "^3.4.0",
     "react-scripts-ts": "2.2.0"
   },

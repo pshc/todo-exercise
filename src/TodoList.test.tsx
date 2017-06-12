@@ -11,5 +11,6 @@ it('renders without crashing', () => {
       addTask={t => void 0}
       markAllTasks={() => void 0}
       toggleTask={id => void 0}
+      connectDropTarget={(() => null) as any}
     />, div);
 });
