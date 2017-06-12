@@ -26,6 +26,8 @@ interface TodoListProps extends React.Props<TodoList> {
   addTask: (name: string) => void;
   toggleTask: (id: string) => void;
   markAllTasks: () => void;
+  moveTaskVisually: (id: string, toIndex: number) => void;
+  commitTaskMovement: (id: string) => void;
   connectDropTarget: ConnectDropTarget;
 }
 
@@ -34,8 +36,9 @@ export class TodoList extends React.Component<TodoListProps, {}> {
   todoInput?: HTMLInputElement;
 
   render() {
-    const { tasks, connectDropTarget, toggleTask } = this.props;
+    const { tasks, connectDropTarget, moveTaskVisually, toggleTask } = this.props;
     let tasksLeft = 0;
+    let index = 0;
     let taskItems = tasks.map(task => {
       if (!task.done) {
         tasksLeft++;
@@ -44,8 +47,10 @@ export class TodoList extends React.Component<TodoListProps, {}> {
         <DndTodoItem
           id={task.id}
           key={task.id}
+          index={index++}
           task={task}
           toggleTask={toggleTask.bind(this, task.id)}
+          moveTaskVisually={moveTaskVisually}
         />
       );
     });
@@ -104,7 +109,8 @@ const todosTarget: DropTargetSpec<TodoListProps> = {
   },
 
   drop: (props, monitor: DropTargetMonitor, todoList: TodoList) => {
-    global.console.log('dropped', monitor.getItem(), monitor.getClientOffset());
+    let dragged = monitor.getItem() as DraggedTask;
+    props.commitTaskMovement(dragged.id);
   }
 };
 
@@ -123,10 +129,13 @@ export const DndTodoList = DropTarget(TASK_TYPE, todosTarget, todosCollect)(Todo
 
 interface TodoItemProps extends React.Props<TodoItem> {
   id: string;
+  index: number;
   task: Task;
   toggleTask: () => void;
   connectDragSource: ConnectDragSource;
+  connectDropTarget: ConnectDropTarget;
   isDragging: boolean;
+  moveTaskVisually: (id: string, toIndex: number) => void;
 }
 
 /// Our vanilla Todo item component (without the drag-and-drop wrapping)
@@ -134,11 +143,11 @@ class TodoItem extends React.Component<TodoItemProps, {}> {
   static defaultProps: TodoItemProps;
 
   render() {
-    const { task, toggleTask, isDragging, connectDragSource } = this.props;
-    return connectDragSource(
+    const { task, toggleTask, isDragging, connectDragSource, connectDropTarget } = this.props;
+    return connectDropTarget(connectDragSource(
       <li
         className={task.done ? 'done' : undefined}
-        style={{ opacity: isDragging ? 0.5 : 1 }}
+        style={{ opacity: isDragging ? 0 : 1 }}
       >
         <label>
           <input
@@ -149,23 +158,65 @@ class TodoItem extends React.Component<TodoItemProps, {}> {
           &nbsp;<span>{task.name}</span>
         </label>
       </li>
-    );
+    ));
   }
+}
+
+interface DraggedTask {
+  id: string;
+  originalIndex: number;
 }
 
 // drag callbacks
 const todoSource: DragSourceSpec<TodoItemProps> = {
-  beginDrag: (props) => ({id: props.id}),
+  beginDrag: (props) => ({id: props.id, originalIndex: props.index}),
+  endDrag: (props, monitor) => {
+    if (monitor == null) {
+      return;
+    }
+    const { id: droppedId, originalIndex } = monitor.getItem() as DraggedTask;
+    if (!monitor.didDrop()) {
+      // the drop ended outside the list, so undo our visual change
+      props.moveTaskVisually(droppedId, originalIndex);
+    }
+  }
 };
 
 // injects drag helpers into DndTodoItem for us
-function todoCollect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
+function todoDragCollect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
   };
 }
 
-// Our drag-enabled todo item Component.
+// Our half-injected todo item Component.
 // tslint:disable-next-line no-any
-const DndTodoItem = DragSource(TASK_TYPE, todoSource, todoCollect)(TodoItem) as any;
+const DragTodoItem = DragSource(TASK_TYPE, todoSource, todoDragCollect)(TodoItem) as any;
+
+// drop-onto-todo-item callbacks
+const todoTarget: DropTargetSpec<TodoItemProps> = {
+  canDrop: () => {
+    return false; // we don't actually drop items into other items, but into the list
+  },
+
+  hover: (props, monitor) => {
+    const { id: draggedId } = monitor!.getItem() as DraggedTask;
+    const { id: overId, index: overIndex } = props;
+    if (draggedId !== overId) {
+      // user moved task across the list; update
+      props.moveTaskVisually(draggedId, overIndex);
+    }
+  },
+};
+
+// injects drop helpers into DndTodoItem for us
+function todoDropCollect(connect: DropTargetConnector, monitor: DropTargetMonitor) {
+  return {
+    connectDropTarget: connect.dropTarget(),
+  };
+}
+
+// Our final drag-and-drop-enabled todo item Component.
+// tslint:disable-next-line no-any
+const DndTodoItem = DropTarget(TASK_TYPE, todoTarget, todoDropCollect)(DragTodoItem) as any;

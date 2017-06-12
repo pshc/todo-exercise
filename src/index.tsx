@@ -23,6 +23,8 @@ class App extends React.Component<{}, {tasks: Task[]}> {
         tasks={this.state.tasks}
         addTask={this.addTask}
         markAllTasks={this.markAllTasks}
+        moveTaskVisually={this.moveTaskVisually}
+        commitTaskMovement={this.commitTaskMovement}
         toggleTask={this.toggleTask}
       />
     );
@@ -47,19 +49,23 @@ class App extends React.Component<{}, {tasks: Task[]}> {
     this.api('PUT', `task/${task.id}`, task);
   }
 
-  /// Modify an existing task in-place.
-  updateTask(id: string, f: (t: Task) => Task) {
+  findTask = (id: string) => {
     // O(n), eww!
     for (let i = 0; i < this.state.tasks.length; i++) {
       let task = this.state.tasks[i];
       if (task.id === id) {
-        this.state.tasks[i] = f(task);
-        this.forceUpdate();
-        this.api('PUT', `task/${task.id}`, task);
-        return;
+        return {task, index: i};
       }
     }
-    global.console.warn(`update: no task of id ${id}`);
+    throw `no task of id ${id}`;
+  }
+
+  /// Modify an existing task in-place.
+  updateTask(id: string, f: (t: Task) => Task) {
+    let { index, task } = this.findTask(id);
+    this.state.tasks[index] = f(task);
+    this.forceUpdate();
+    this.api('PUT', `task/${id}`, task);
   }
 
   toggleTask = (id: string) => {
@@ -72,6 +78,19 @@ class App extends React.Component<{}, {tasks: Task[]}> {
   markAllTasks = () => {
     this.setState({tasks: this.state.tasks.map(task => { task.done = true; return task; })});
     this.api('POST', 'tasks/markAll');
+  }
+
+  /// Re-order the task in the list, but don't commit the change yet.
+  moveTaskVisually = (id: string, toIndex: number) => {
+    const { index, task } = this.findTask(id);
+    this.state.tasks.splice(index, 1);
+    this.state.tasks.splice(toIndex, 0, task);
+    this.forceUpdate();
+  }
+
+  commitTaskMovement = (id: string) => {
+    const { index } = this.findTask(id);
+    this.api('POST', `tasks/move/${id}/to/${index}`);
   }
 }
 

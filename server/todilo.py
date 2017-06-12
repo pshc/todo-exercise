@@ -43,6 +43,18 @@ def mark_all_complete():
         task['done'] = True
     return jsonify({})
 
+@app.route('/api/tasks/move/<id>/to/<int:index>', methods=['POST'])
+def move_one_task(id, index):
+    if id not in TASKS:
+        return jsonify({'alreadyDeleted': True})
+    if 0 <= index < len(TASK_LIST):
+        TASK_LIST.remove(id)
+        TASK_LIST.insert(index, id)
+        return jsonify({})
+    else:
+        raise InvalidUsage('`index` is out of bounds')
+
+
 class InvalidUsage(Exception):
     status_code = 400
     def __init__(self, reason):

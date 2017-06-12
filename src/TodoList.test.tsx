@@ -10,6 +10,8 @@ it('renders without crashing', () => {
       tasks={tasks}
       addTask={t => void 0}
       markAllTasks={() => void 0}
+      moveTaskVisually={(id, index) => void 0}
+      commitTaskMovement={(id) => void 0}
       toggleTask={id => void 0}
       connectDropTarget={(() => null) as any}
     />, div);
