@@ -86,6 +86,10 @@ export class TodoList extends React.Component<TodoListProps, {}> {
     );
   }
 
+  componentDidMount() {
+    this.todoInput!.focus();
+  }
+
   addTask = (event: MouseEventInit) => {
     (event as Event).preventDefault();
     let input = this.todoInput!;
