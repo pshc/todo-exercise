@@ -78,6 +78,14 @@
   user-select: none;
 }
 
+.TodoList ul li:hover {
+  cursor: move;
+  background-image: url(draghandle.svg);
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 50px 10px;
+}
+
 .TodoList ul li.done span {
   color: #999;
   text-decoration: line-through;
