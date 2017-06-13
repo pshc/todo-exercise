@@ -14,5 +14,6 @@ it('renders without crashing', () => {
       commitTaskMovement={(id) => void 0}
       toggleTask={id => void 0}
       connectDropTarget={(() => null) as any}
+      isDragging={false}
     />, div);
 });

@@ -73,7 +73,7 @@
 
 /* a single task */
 .TodoList ul li {
-  padding: 20px;
+  padding: 20px 30px 20px 20px;
   text-shadow: 1px 1px white;
   user-select: none;
 }
@@ -84,6 +84,12 @@
   background-position: right center;
   background-repeat: no-repeat;
   background-size: 50px 10px;
+}
+
+/* when dragging, make sure other rows don't show drag handles too */
+.TodoList.dragging ul li {
+  cursor: normal;
+  background-image: none;
 }
 
 .TodoList ul li.done span {

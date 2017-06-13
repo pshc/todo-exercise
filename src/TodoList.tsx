@@ -29,6 +29,7 @@ interface TodoListProps extends React.Props<TodoList> {
   moveTaskVisually: (id: string, toIndex: number) => void;
   commitTaskMovement: (id: string) => void;
   connectDropTarget: ConnectDropTarget;
+  isDragging: boolean;
 }
 
 /// The vanilla (no-drag-and-drop) todo list component
@@ -36,7 +37,7 @@ export class TodoList extends React.Component<TodoListProps, {}> {
   todoInput?: HTMLInputElement;
 
   render() {
-    const { tasks, connectDropTarget, moveTaskVisually, toggleTask } = this.props;
+    const { tasks, connectDropTarget, isDragging, moveTaskVisually, toggleTask } = this.props;
     let tasksLeft = 0;
     let index = 0;
     let taskItems = tasks.map(task => {
@@ -57,7 +58,7 @@ export class TodoList extends React.Component<TodoListProps, {}> {
 
     let droppableList = connectDropTarget(<ul>{taskItems}</ul>);
     return (
-      <section className="TodoList">
+      <section className={'TodoList ' + (isDragging ? ' dragging' : '')}>
         <header>
           <h1>Todos</h1>
         </header>
@@ -118,6 +119,7 @@ const todosTarget: DropTargetSpec<TodoListProps> = {
 function todosCollect(connect: DropTargetConnector, monitor: DropTargetMonitor) {
   return {
     connectDropTarget: connect.dropTarget(),
+    isDragging: monitor.canDrop(),
   };
 }
 
